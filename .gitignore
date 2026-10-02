@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Collector output (raw data stays local; the site only needs website/public/events.js)
+fr33_collector/out/
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Old drafts kept for reference only
+_archive/

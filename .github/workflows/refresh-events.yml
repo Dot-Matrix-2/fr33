@@ -1,0 +1,53 @@
+# Refreshes the free-events listings twice a day and commits the new data.
+# Cloudflare Pages redeploys automatically on every commit.
+name: Refresh events
+
+on:
+  schedule:
+    - cron: "7 10 * * *"   # ~6am New York (10:07 UTC; 5am in winter)
+    - cron: "7 22 * * *"   # ~6pm New York (22:07 UTC; 5pm in winter)
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-events
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests icalendar python-dateutil
+
+      - name: Collect events
+        working-directory: fr33_collector
+        env:
+          TZ: America/New_York
+        run: python collect.py --days 31
+
+      - name: Build site data
+        env:
+          TZ: America/New_York
+        run: python website/update_site.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "fr33-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/public/events.js
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Refresh events $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi

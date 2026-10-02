@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Free in NYC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: sticky header, playful hero, chunky filter pills, day-grouped cards with a colored date tile. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#f7f7f7; --line:#e5e5e5; --line-strong:#cfcfcf;
+  --fg:#3c3c3c; --muted:#777777;
+  --green:#58cc02; --green-deep:#58a700; --green-ink:#ffffff; --green-tint:#e6f7d4;
+  --blue:#1cb0f6; --blue-deep:#1899d6; --blue-tint:#ddf4ff;
+  --focus:#1cb0f6;
+  --c-music:#ce82ff; --c-music-d:#a560d6;
+  --c-arts:#1cb0f6; --c-arts-d:#1899d6;
+  --c-outdoors:#58cc02; --c-outdoors-d:#58a700;
+  --c-food:#ff9600; --c-food-d:#d97e00;
+  --c-film:#ff4b4b; --c-film-d:#d33131;
+  --c-talks:#2b70c9; --c-talks-d:#1d5aa8;
+  --c-family:#ffc800; --c-family-d:#d9a900; --c-family-ink:#3c3c3c;
+  --shadow-press:#e5e5e5;
+  --font:'Nunito','DIN Rounded','Varela Round',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131f24; --surface:#1b2a31; --surface-2:#202f36; --line:#37464f; --line-strong:#4b5d68;
+  --fg:#e6eef2; --muted:#9db0ba; --green-tint:#23401a; --blue-tint:#15364a; --shadow-press:#37464f; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#131f24; --surface:#1b2a31; --surface-2:#202f36; --line:#37464f; --line-strong:#4b5d68;
+  --fg:#e6eef2; --muted:#9db0ba; --green-tint:#23401a; --blue-tint:#15364a; --shadow-press:#37464f; color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.45;font-weight:700;margin:0;padding-inline:16px}
+button,input{font:inherit;color:inherit}
+a{color:var(--blue-deep)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1040px;margin-inline:auto}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);margin-inline:-16px;padding:12px 16px;border-bottom:2px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.6rem;color:var(--green);letter-spacing:-.02em;text-decoration:none}
+.logo svg{flex:none}
+.search{flex:1 1 220px;min-width:0;position:relative}
+.search input{width:100%;border:2px solid var(--line);border-radius:16px;background:var(--surface-2);padding:10px 14px;font-weight:700}
+.search input::placeholder{color:var(--muted)}
+.icon-btn{border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);border-radius:14px;padding:8px 12px;cursor:pointer;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--muted)}
+.icon-btn:active{border-bottom-width:2px;transform:translateY(2px)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;padding-block:32px 20px}
+.hero h1{font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{margin:0 0 18px;color:var(--muted);font-size:1.1rem;max-width:46ch}
+.promise{display:flex;flex-wrap:wrap;gap:8px}
+.promise span{background:var(--green-tint);color:var(--green-deep);border-radius:12px;padding:6px 12px;font-weight:900;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+:root[data-theme="dark"] .promise span{color:var(--green)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .promise span{color:var(--green)}}
+.hero svg{width:100%;height:auto;max-width:420px;justify-self:center}
+
+/* filters */
+.filters{display:flex;flex-direction:column;gap:14px;padding-block:8px 20px}
+.row-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:900;margin-bottom:6px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);border-radius:16px;padding:8px 16px;cursor:pointer;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-size:.82rem;white-space:nowrap}
+.pill:active{border-bottom-width:2px;transform:translateY(2px)}
+.pill[aria-pressed="true"]{background:var(--blue-tint);border-color:var(--blue);color:var(--blue-deep)}
+.pill.cat[aria-pressed="true"]{background:var(--surface);border-color:var(--cc);color:var(--cc)}
+.pill.cat i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--cc);margin-right:8px}
+.when .pill[aria-pressed="true"]{background:var(--green);border-color:var(--green-deep);color:var(--green-ink)}
+
+/* results */
+.status{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:2px solid var(--line);padding-block:16px 4px}
+.count{font-size:1.25rem;font-weight:900}
+.count small{color:var(--muted);font-weight:700;font-size:.9rem;margin-left:6px}
+.linkish{background:none;border:0;color:var(--blue-deep);cursor:pointer;font-weight:900;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;padding:6px 0}
+.updated{color:var(--muted);font-size:.85rem;margin:4px 0 0;display:flex;align-items:center;gap:8px}
+.updated::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.tag.rsvp{border-color:var(--c-food);color:var(--c-food-d)}
+.sample-note{background:var(--surface-2);border:2px dashed var(--line-strong);border-radius:16px;padding:10px 14px;margin-block:10px;color:var(--muted);font-size:.9rem}
+.day{margin-top:24px}
+.day h2{font-size:1rem;margin:0 0 10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;display:flex;gap:10px;align-items:baseline}
+.day h2 b{color:var(--fg);font-size:1.15rem;letter-spacing:0;text-transform:none}
+.list{display:grid;gap:12px}
+.card{background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;border-radius:20px;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.tile{width:64px;border-radius:14px;background:var(--cc);border-bottom:4px solid var(--ccd);color:#fff;text-align:center;padding:6px 0 4px;line-height:1}
+.tile .m{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:900}
+.tile .d{font-size:1.7rem;font-weight:900;margin-top:2px}
+.tile.ink{color:var(--c-family-ink)}
+.card h3{margin:0 0 4px;font-size:1.15rem;line-height:1.25;font-weight:900;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--muted);font-size:.92rem}
+.meta span{display:inline-flex;gap:6px;align-items:center;min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900;border-radius:10px;padding:3px 9px;border:2px solid var(--line);color:var(--muted)}
+.tag.free{background:var(--green);border-color:var(--green);color:#fff}
+.tag.cat{border-color:var(--cc);color:var(--cc)}
+.tag.sample{border-style:dashed}
+.more{margin-top:10px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.detail{margin-top:10px;color:var(--fg);font-weight:600;overflow-wrap:anywhere}
+.detail p{margin:0 0 8px;max-width:62ch}
+.btn{display:inline-block;border:0;border-bottom:4px solid var(--blue-deep);background:var(--blue);color:#fff;border-radius:14px;padding:9px 16px;text-transform:uppercase;letter-spacing:.06em;font-weight:900;font-size:.8rem;cursor:pointer;text-decoration:none}
+.btn:active{border-bottom-width:0;transform:translateY(4px)}
+.empty{text-align:center;padding:40px 16px;border:2px dashed var(--line-strong);border-radius:24px;margin-top:20px}
+.empty h2{margin:12px 0 6px;font-size:1.4rem;font-weight:900}
+.empty p{color:var(--muted);margin:0 0 16px}
+.btn-green{background:var(--green);border-bottom-color:var(--green-deep)}
+
+footer{border-top:2px solid var(--line);margin-top:48px;padding-block:24px 40px;color:var(--muted);font-size:.9rem;font-weight:600}
+footer b{color:var(--fg)}
+
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr;padding-block:20px 8px}
+  .hero svg{max-width:300px;order:-1}
+  .tile{width:54px}
+  .tile .d{font-size:1.4rem}
+  .pills.scroll{flex-wrap:nowrap;overflow-x:auto;margin-inline:-16px;padding:0 16px 6px;scrollbar-width:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card,.pill,.btn{transition:transform .08s ease,border-color .15s ease}
+  @media (hover:hover){.card:hover{border-color:var(--line-strong)}.pill:hover{background:var(--surface-2)}}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Free in NYC home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="10" fill="#58cc02"/><rect x="1" y="25" width="32" height="8" rx="4" fill="#58a700"/><path d="M9 25V13l5-3v15M16 25V8l5 2v15M23 25V15l3 1v9" fill="#fff"/></svg>
+      Free in NYC
+    </a>
+    <label class="search"><span class="sr" style="position:absolute;left:-9999px">Search events</span>
+      <input id="q" type="search" placeholder="Search events, parks, museums…" autocomplete="off">
+    </label>
+    <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark theme">Theme</button>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <div>
+      <h1>Every free event in New York City, <em>in one place</em>.</h1>
+      <p>Pick a day, pick a borough, go. No tickets, no sign-ups, no catch.</p>
+      <div class="promise"><span>Always free</span><span>No booking</span><span>Next 30 days</span></div>
+    </div>
+    <svg viewBox="0 0 420 300" role="img" aria-label="Illustration of the New York skyline with a bright sun">
+      <circle cx="320" cy="80" r="46" fill="#ffc800"/>
+      <circle cx="320" cy="80" r="64" fill="#ffc800" opacity=".22"/>
+      <rect x="20" y="230" width="380" height="26" rx="13" fill="#58a700"/>
+      <rect x="20" y="220" width="380" height="26" rx="13" fill="#58cc02"/>
+      <g>
+        <rect x="52" y="120" width="46" height="110" rx="8" fill="#1cb0f6"/>
+        <rect x="104" y="80" width="50" height="150" rx="8" fill="#ce82ff"/>
+        <rect x="160" y="140" width="44" height="90" rx="8" fill="#ff9600"/>
+        <path d="M212 230V112l26-44 26 44v118z" fill="#ff4b4b"/>
+        <rect x="270" y="130" width="48" height="100" rx="8" fill="#2b70c9"/>
+        <rect x="324" y="156" width="40" height="74" rx="8" fill="#58cc02" stroke="#fff" stroke-width="0"/>
+      </g>
+      <g fill="#fff" opacity=".85">
+        <rect x="64" y="140" width="8" height="8" rx="2"/><rect x="78" y="140" width="8" height="8" rx="2"/><rect x="64" y="160" width="8" height="8" rx="2"/><rect x="78" y="160" width="8" height="8" rx="2"/>
+        <rect x="118" y="100" width="8" height="8" rx="2"/><rect x="132" y="100" width="8" height="8" rx="2"/><rect x="118" y="120" width="8" height="8" rx="2"/><rect x="132" y="120" width="8" height="8" rx="2"/><rect x="118" y="140" width="8" height="8" rx="2"/><rect x="132" y="140" width="8" height="8" rx="2"/>
+        <rect x="232" y="130" width="8" height="8" rx="2"/><rect x="232" y="150" width="8" height="8" rx="2"/>
+        <rect x="284" y="150" width="8" height="8" rx="2"/><rect x="298" y="150" width="8" height="8" rx="2"/>
+      </g>
+    </svg>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="when">
+      <div class="row-label">When</div>
+      <div class="pills scroll" id="when"></div>
+    </div>
+    <div>
+      <div class="row-label">Borough</div>
+      <div class="pills scroll" id="boroughs"></div>
+    </div>
+    <div>
+      <div class="row-label">Type of event</div>
+      <div class="pills" id="cats"></div>
+    </div>
+    <div>
+      <div class="row-label">Sign-up</div>
+      <div class="pills" id="walkin"></div>
+    </div>
+  </section>
+
+  <section aria-live="polite">
+    <div class="status">
+      <div class="count" id="count"></div>
+      <button class="linkish" id="clear" type="button" hidden>Clear filters</button>
+    </div>
+    <div id="note"></div>
+    <p class="updated" id="updated" hidden></p>
+    <div id="results"></div>
+  </section>
+</main>
+
+<footer><div class="wrap"><b>What counts as free.</b> Every event listed here costs nothing to attend. No ticket, no deposit, no required purchase, no sign-up fee. Free giveaways and promotions are not listed. Times and locations can change, so check the official page before you go.</div></footer>
+
+<script src="events.js"></script>
+<script>
+/* ============================================================
+   DATA CONTRACT  (one object per event)
+   id            string   unique, stable
+   title         string
+   date          string   YYYY-MM-DD (New York local date)
+   start_time    string   "HH:MM" 24h, optional (omit for all-day)
+   end_time      string   "HH:MM" 24h, optional
+   venue         string
+   address       string   optional
+   neighborhood  string   optional
+   borough       string   Manhattan | Brooklyn | Queens | Bronx | Staten Island
+   category      string   music | arts | outdoors | food | film | talks | family
+   description  string   optional, 1-3 sentences
+   url           string   official event page (https)
+   source        string   optional, where the listing came from
+   rsvp_required bool     free, but a free sign-up or free ticket is needed
+   ============================================================
+   Live data: the page reads the "days" collection of this artifact's db
+   (one doc per date: {date, count, events:[...]}) and meta/status
+   ({updated_at, event_count, sources_ok, sources_failed}). A scheduled task
+   refreshes both twice a day. A legacy flat "events" collection also works.
+   Fallback: EMBEDDED_EVENTS below (paste a JSON array to ship a static copy).
+   If both are empty, clearly labelled sample events are shown.
+   ============================================================ */
+const EMBEDDED = window.FREE_EVENTS_DATA || null;
+const EMBEDDED_EVENTS = (EMBEDDED && Array.isArray(EMBEDDED.events)) ? EMBEDDED.events : [];
+
+const CATS = {
+  music:{label:'Music',cc:'--c-music',ccd:'--c-music-d'},
+  arts:{label:'Art & museums',cc:'--c-arts',ccd:'--c-arts-d'},
+  outdoors:{label:'Outdoors & fitness',cc:'--c-outdoors',ccd:'--c-outdoors-d'},
+  food:{label:'Food & markets',cc:'--c-food',ccd:'--c-food-d'},
+  film:{label:'Film & theater',cc:'--c-film',ccd:'--c-film-d'},
+  talks:{label:'Talks & community',cc:'--c-talks',ccd:'--c-talks-d'},
+  family:{label:'Family',cc:'--c-family',ccd:'--c-family-d'}
+};
+const BOROUGHS = ['Manhattan','Brooklyn','Queens','Bronx','Staten Island'];
+const WHEN = [['today','Today'],['tomorrow','Tomorrow'],['weekend','This weekend'],['week','Next 7 days'],['month','Next 30 days'],['all','Everything']];
+
+/* ---------- date helpers (local calendar dates, no time zones) ---------- */
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const fmtTime = t => { if(!t) return ''; const [h,m] = t.split(':').map(Number); const ap = h>=12?'pm':'am'; return ((h+11)%12+1)+(m?':'+pad(m):'')+' '+ap; };
+const fmtRange = e => e.start_time ? (fmtTime(e.start_time)+(e.end_time?' – '+fmtTime(e.end_time):'')) : 'All day';
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+/* ---------- sample events (shown only when no real data exists) ---------- */
+function sampleEvents(){
+  const S = [
+    [0,'09:00','10:00','Morning yoga on the lawn','Bryant Park','Midtown','Manhattan','outdoors','Bring a mat and join a relaxed outdoor class.'],
+    [0,'12:30','13:30','Lunchtime piano recital','Grand Central Terminal','Midtown East','Manhattan','music','A short recital in the main concourse.'],
+    [0,'18:00','20:00','Open-air movie night','Brooklyn Bridge Park','DUMBO','Brooklyn','film','Bring a blanket. Seating is first come, first served.'],
+    [1,'10:00','17:00','Free admission day','Queens Museum','Flushing Meadows','Queens','arts','Walk in and explore the galleries.'],
+    [1,'17:30','19:00','Community run club','Van Cortlandt Park','Kingsbridge','Bronx','outdoors','A social 5K loop for all paces.'],
+    [2,'11:00','15:00','Neighborhood farmers market tasting day','Union Square Greenmarket','Union Square','Manhattan','food','Free samples from local growers.'],
+    [2,'19:00','21:00','Jazz in the garden','Snug Harbor Cultural Center','New Brighton','Staten Island','music','Live jazz on the grounds.'],
+    [3,'14:00','15:30','Storytime and crafts','Brooklyn Public Library, Central','Prospect Heights','Brooklyn','family','Stories and a craft project for young kids.'],
+    [3,'18:30','20:00','Author talk and Q&A','New York Public Library','Midtown','Manhattan','talks','An evening reading followed by questions.'],
+    [4,'16:00','22:00','Friday night gallery crawl','Bushwick Arts District','Bushwick','Brooklyn','arts','Open studios and pop-up shows.'],
+    [4,'20:00','22:00','Shakespeare in the park','Central Park','Upper West Side','Manhattan','film','Outdoor performance. Arrive early for the line.'],
+    [5,'09:00','12:00','Waterfront cleanup and kayaking','Hunter’s Point South Park','Long Island City','Queens','outdoors','Join a cleanup, then paddle if the weather allows.'],
+    [5,'12:00','18:00','Street festival','Arthur Avenue','Belmont','Bronx','food','Food stalls, music, and a parade.'],
+    [6,'13:00','16:00','Family day at the botanical garden','Queens Botanical Garden','Flushing','Queens','family','Garden games and a scavenger hunt.'],
+    [6,'15:00','17:00','Chamber music in the park','Fort Tryon Park','Washington Heights','Manhattan','music','An afternoon concert on the lawn.'],
+    [8,'18:00','19:30','Neighborhood history walk','Lower East Side Tenement district','Lower East Side','Manhattan','talks','A guided walk through local history.'],
+    [10,'17:00','20:00','Night market','Flushing Meadows Corona Park','Flushing','Queens','food','Open-air stalls and live performances.'],
+    [12,'11:00','16:00','Sculpture garden open house','Socrates Sculpture Park','Astoria','Queens','arts','Outdoor art and guided tours.'],
+    [15,'19:00','21:00','Outdoor concert series','Prospect Park Bandshell','Park Slope','Brooklyn','music','Live bands under the stars.'],
+    [18,'10:00','13:00','Community garden workday','Jackie Robinson Park','Harlem','Manhattan','outdoors','Help plant and learn from neighbors.'],
+    [21,'14:00','17:00','Kids’ science fair','Staten Island Children’s Museum lawn','Snug Harbor','Staten Island','family','Hands-on experiments for all ages.'],
+    [24,'18:00','21:00','Film screening on the pier','Pier 57','Chelsea','Manhattan','film','Classic movie on a big outdoor screen.'],
+    [27,'12:00','15:00','Fall harvest market','Fort Greene Park','Fort Greene','Brooklyn','food','Seasonal produce and cider tasting.'],
+    [40,'13:00','16:00','Holiday tree lighting preview','Rockefeller Center','Midtown','Manhattan','family','Sample event outside the 30 day window.']
+  ];
+  return S.map((r,i)=>({id:'sample-'+i,date:iso(addDays(TODAY,r[0])),start_time:r[1],end_time:r[2],title:r[3],venue:r[4],neighborhood:r[5],borough:r[6],category:r[7],description:r[8],url:'',source:'Sample',sample:true}));
+}
+
+/* ---------- state ---------- */
+let ALL = [];
+let usingSample = false;
+const state = {when:'month', borough:'', cat:'', q:'', walkin:false};
+
+function normalize(e){
+  if(!e || !e.title || !/^\d{4}-\d{2}-\d{2}$/.test(e.date||'')) return null;
+  return {
+    id:String(e.id||e.title+e.date), title:String(e.title), date:e.date,
+    start_time:e.start_time||'', end_time:e.end_time||'',
+    venue:e.venue||'', address:e.address||'', neighborhood:e.neighborhood||'',
+    borough:e.borough||'', category:CATS[e.category]?e.category:'talks',
+    description:e.description||'', url:/^https?:\/\//i.test(e.url||'')?e.url:'',
+    source:e.source||'', sample:!!e.sample, rsvp:!!e.rsvp_required
+  };
+}
+function setData(list, sample){
+  ALL = list.map(normalize).filter(Boolean).sort((a,b)=>a.date.localeCompare(b.date)||(a.start_time||'').localeCompare(b.start_time||'')||a.title.localeCompare(b.title));
+  usingSample = sample; render();
+}
+
+/* ---------- filtering ---------- */
+function inWindow(dateStr){
+  const d = parse(dateStr), diff = Math.round((d-TODAY)/864e5);
+  switch(state.when){
+    case 'today': return diff===0;
+    case 'tomorrow': return diff===1;
+    case 'weekend': return diff>=0 && diff<=6 && (d.getDay()===6||d.getDay()===0);
+    case 'week': return diff>=0 && diff<=6;
+    case 'month': return diff>=0 && diff<=29;
+    default: return diff>=0;
+  }
+}
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  return ALL.filter(e=> inWindow(e.date) && (!state.borough||e.borough===state.borough) && (!state.cat||e.category===state.cat) && (!state.walkin||!e.rsvp)
+    && (!q || (e.title+' '+e.venue+' '+e.neighborhood+' '+e.description+' '+e.borough).toLowerCase().includes(q)));
+}
+
+/* ---------- DOM ---------- */
+const $ = id => document.getElementById(id);
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  for(const k in (attrs||{})){
+    if(k==='class') el.className = attrs[k];
+    else if(k==='style') el.setAttribute('style',attrs[k]);
+    else if(k.startsWith('on')) el.addEventListener(k.slice(2),attrs[k]);
+    else if(attrs[k]!==false && attrs[k]!=null) el.setAttribute(k,attrs[k]);
+  }
+  for(const c of kids.flat()) if(c!=null && c!==false) el.append(c.nodeType?c:document.createTextNode(c));
+  return el;
+}
+function pill(label, pressed, onclick, extra){
+  const b = h('button',{type:'button',class:'pill '+(extra&&extra.cls||''),'aria-pressed':String(pressed),onclick, style:extra&&extra.style},extra&&extra.dot?h('i'):null,label);
+  return b;
+}
+function buildFilters(){
+  $('when').replaceChildren(...WHEN.map(([k,l])=>pill(l,state.when===k,()=>{state.when=k;render();})));
+  $('boroughs').replaceChildren(pill('All boroughs',!state.borough,()=>{state.borough='';render();}),
+    ...BOROUGHS.map(b=>pill(b,state.borough===b,()=>{state.borough=state.borough===b?'':b;render();})));
+  $('cats').replaceChildren(pill('All types',!state.cat,()=>{state.cat='';render();}),
+    ...Object.entries(CATS).map(([k,c])=>pill(c.label,state.cat===k,()=>{state.cat=state.cat===k?'':k;render();},{cls:'cat',dot:true,style:'--cc:var('+c.cc+')'})));
+  $('walkin').replaceChildren(pill('Show all',!state.walkin,()=>{state.walkin=false;render();}),
+    pill('Just show up',state.walkin,()=>{state.walkin=true;render();}));
+}
+function dayHeading(ds){
+  const d = parse(ds), diff = Math.round((d-TODAY)/864e5);
+  const rel = diff===0?'Today':diff===1?'Tomorrow':DAYS[d.getDay()];
+  return h('h2',null,h('b',null,rel),MONTHS[d.getMonth()]+' '+d.getDate());
+}
+function card(e){
+  const c = CATS[e.category], d = parse(e.date);
+  const style = '--cc:var('+c.cc+');--ccd:var('+c.ccd+')';
+  const place = [e.venue, e.neighborhood && e.neighborhood!==e.venue ? e.neighborhood : '', e.borough].filter(Boolean).join(' · ');
+  const detail = h('div',{class:'detail',hidden:true},
+    e.description?h('p',null,e.description):null,
+    e.address?h('p',null,'Address: '+e.address):null,
+    e.source&&!e.sample?h('p',{style:'color:var(--muted)'},'Listed via '+e.source):null);
+  const toggle = h('button',{type:'button',class:'linkish','aria-expanded':'false',onclick:ev=>{
+    const open = detail.hidden; detail.hidden = !open; ev.currentTarget.setAttribute('aria-expanded',String(open)); ev.currentTarget.textContent = open?'Less':'Details';
+  }},'Details');
+  const hasDetail = e.description||e.address;
+  return h('article',{class:'card',style},
+    h('div',{class:'tile'+(e.category==='family'?' ink':''),'aria-hidden':'true'},h('div',{class:'m'},MONTHS[d.getMonth()]),h('div',{class:'d'},String(d.getDate()))),
+    h('div',{style:'min-width:0'},
+      h('h3',null,e.title),
+      h('div',{class:'meta'},h('span',null,fmtRange(e)),place?h('span',null,place):null),
+      h('div',{class:'tags'},h('span',{class:'tag free'},'Free'),h('span',{class:'tag cat'},c.label),e.rsvp?h('span',{class:'tag rsvp'},'Free sign-up'):null,e.sample?h('span',{class:'tag sample'},'Sample'):null),
+      h('div',{class:'more'},hasDetail?toggle:null,e.url?h('a',{class:'btn',href:e.url,target:'_blank',rel:'noopener'},'Official page'):null),
+      hasDetail?detail:null));
+}
+function render(){
+  buildFilters();
+  const list = filtered();
+  const n = list.length;
+  $('count').replaceChildren(String(n)+(n===1?' free event':' free events'),h('small',null,WHEN.find(w=>w[0]===state.when)[1].toLowerCase()));
+  const active = state.borough||state.cat||state.q||state.walkin||state.when!=='month';
+  $('clear').hidden = !active;
+  $('note').replaceChildren(usingSample?h('div',{class:'sample-note'},'You are looking at sample events. Run website/update_site.py to load real listings.'):'');
+  const out = $('results');
+  if(!n){
+    out.replaceChildren(h('div',{class:'empty'},
+      h('svg',{width:'64',height:'64',viewBox:'0 0 64 64','aria-hidden':'true'}),
+      h('h2',null,'No free events match'),h('p',null,'Try another day, borough, or type of event.'),
+      h('button',{type:'button',class:'btn btn-green',onclick:reset},'Show everything')));
+    out.querySelector('svg').innerHTML='<circle cx="32" cy="32" r="28" fill="#ffc800"/><circle cx="23" cy="26" r="4" fill="#3c3c3c"/><circle cx="41" cy="26" r="4" fill="#3c3c3c"/><path d="M22 44c6-6 14-6 20 0" stroke="#3c3c3c" stroke-width="4" fill="none" stroke-linecap="round"/>';
+    return;
+  }
+  const groups = new Map();
+  for(const e of list){ if(!groups.has(e.date)) groups.set(e.date,[]); groups.get(e.date).push(e); }
+  out.replaceChildren(...[...groups].map(([ds,items])=>h('section',{class:'day'},dayHeading(ds),h('div',{class:'list'},items.map(card)))));
+}
+function reset(){ state.walkin=false; state.when='month'; state.borough=''; state.cat=''; state.q=''; $('q').value=''; render(); }
+
+$('q').addEventListener('input',e=>{state.q=e.target.value;render();});
+$('clear').addEventListener('click',reset);
+
+/* theme toggle (remembered per viewer when storage allows) */
+(function(){
+  const root = document.documentElement;
+  try{ const t = localStorage.getItem('theme'); if(t) root.setAttribute('data-theme',t); }catch(e){}
+  $('theme').addEventListener('click',()=>{
+    const dark = root.getAttribute('data-theme')==='dark' || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = dark?'light':'dark'; root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('theme',next); }catch(e){}
+  });
+})();
+
+function showUpdated(m){
+  const el = $('updated');
+  const t = m && m.updated_at ? new Date(m.updated_at) : null;
+  if(!t || isNaN(t)){ el.hidden = true; return; }
+  const hrs = Math.round((Date.now()-t)/36e5);
+  const when = hrs<1?'less than an hour ago':hrs===1?'1 hour ago':hrs<48?hrs+' hours ago':Math.round(hrs/24)+' days ago';
+  el.textContent = 'Listings refreshed '+when+' ('+t.toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' NYC time)';
+  el.hidden = false;
+}
+/* ---------- boot: sample first, then embedded or live data ---------- */
+if(EMBEDDED_EVENTS.length){ setData(EMBEDDED_EVENTS,false); showUpdated(EMBEDDED); } else setData(sampleEvents(),true);
+
+(async function(){
+  try{
+    const db = await (window.claude&&window.claude.use ? window.claude.use('db') : null);
+    if(!db) return;
+    let dayRows = [], flatRows = [];
+    const apply = ()=>{
+      const rows = dayRows.length ? dayRows : flatRows;
+      if(rows.length) setData(rows,false);
+      else if(!EMBEDDED_EVENTS.length) setData(sampleEvents(),true);
+    };
+    db.collection('days').onSnapshot(snap=>{
+      dayRows = snap.docs.filter(d=>d.exists).flatMap(d=>{ const x = d.data()||{}; return Array.isArray(x.events)?x.events:[]; });
+      apply();
+    },()=>{});
+    db.collection('events').onSnapshot(snap=>{
+      flatRows = snap.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}));
+      apply();
+    },()=>{});
+    db.doc('meta/status').onSnapshot(snap=>{ showUpdated(snap.exists ? snap.data() : null); },()=>{});
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
